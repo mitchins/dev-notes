@@ -1,0 +1,4 @@
+- [Overview](README)
+- [Notes index](notes/README)
+- [Note template](templates/note)
+- [Agent instructions](AGENTS)
