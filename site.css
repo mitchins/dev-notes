@@ -1,0 +1,13 @@
+:root {
+  --theme-color: #315b88;
+}
+
+.markdown-section {
+  max-width: 52rem;
+}
+
+@media (max-width: 768px) {
+  .markdown-section {
+    padding: 1.25rem 1rem;
+  }
+}
