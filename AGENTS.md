@@ -2,7 +2,7 @@
 
 - Read the repository README and relevant topic index before adding or changing a note.
 - Before solving a tricky issue, search for relevant platform or library notes. When explicitly asked to record a learning, include useful failed approaches as well as verified fixes, with public evidence when available.
-- Use one concise Markdown file per learning. Start from `templates/note.md`; add it to the relevant `notes/` topic index. Avoid empty folders and duplicate notes.
+- Use one concise Markdown file per learning. Start from `templates/note.md`; add it to the relevant `notes/` topic index and `_sidebar.md` so Docsify navigation and search can find it. Avoid empty folders and duplicate notes.
 - Separate verified facts from hypotheses. Include affected versions, evidence, and verification steps when known; do not invent missing details.
 - Keep this repository broadly useful for development and porting. Do not treat Analogue Pocket RISC/SDL2 as the only topic.
 - This repository is public. Never add secrets, private conversations or email, personal or host details, or invented project claims. Label unverified explanations as hypotheses. Review the diff for sensitive content.
