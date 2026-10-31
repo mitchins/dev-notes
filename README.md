@@ -7,7 +7,7 @@ A small, public notebook of practical development lessons: gotchas, fixes, faile
 - [Notes index](notes/README.md)
 - [Note template](templates/note.md)
 
-Anyone can read the repository without signing in. Browse files on GitHub or clone it anonymously and search locally with `rg`. GitHub search may require signing in:
+Anyone can read the repository without signing in. Browse files on GitHub or clone it anonymously and search locally with `rg`. GitHub search may require signing in. The [Docsify site](https://mitchins.github.io/dev-notes/) provides navigation and full-text search:
 
 ```sh
 git clone https://github.com/mitchins/dev-notes.git
@@ -24,7 +24,7 @@ Keep one focused note per learning and link related notes instead of copying the
 1. Copy [`templates/note.md`](templates/note.md) into the most relevant topic folder under `notes/`.
 2. Give the file a descriptive, searchable name, for example `sdl2-input-focus.md`.
 3. State what is confirmed and what is still a hypothesis. Include versions, evidence, and a way to verify the result when available.
-4. Add a link to the note in that topic's `README.md` index. Create a topic folder only when there is a real note to put in it.
+4. Add the note to that topic's `README.md` index and to [`_sidebar.md`](_sidebar.md) so Docsify navigation and search can find it. Create a topic folder only when there is a real note to put in it.
 5. Review the diff for secrets and private details before sharing it.
 
 Notes can describe non-game development too. Porting work, including Analogue Pocket RISC/SDL2, is an initial area of interest; no project-specific findings are assumed here.
