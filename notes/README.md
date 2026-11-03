@@ -4,6 +4,6 @@ Notes are grouped by the subject that best helps someone find them. Each topic f
 
 ## Topics
 
-No notes have been published yet. Start with the [note template](../templates/note.md), then add the first topic and link it here.
+- [Graphics and porting](graphics-porting/README.md) — renderer and hardware-graphics lessons.
 
 Search all notes with GitHub search or locally with `rg`. Prefer descriptive filenames and link related notes instead of duplicating content.

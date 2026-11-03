@@ -1,4 +1,6 @@
 - [Overview](README)
 - [Notes index](notes/README)
+- [Graphics and porting](notes/graphics-porting/README)
+- [OS25 affine-span texture bounds and masks](notes/graphics-porting/os25-affine-span-texture-contract)
 - [Note template](templates/note)
 - [Agent instructions](AGENTS)
