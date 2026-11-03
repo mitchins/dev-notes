@@ -1,9 +1,13 @@
-# OS25 affine-span texture bounds and masks
+# Analogue Pocket / OS25: affine-span texture bounds and masks
 
-**Status:** Verified, with scope limits below  
+**Status:** Needs recheck (pinned public evidence unavailable; prior result reported below)  
 **Area:** Graphics hardware and software-renderer porting  
-**Last checked:** 2026-11-03  
-**Applies to:** openfpgaOS OS25 affine span groups (`OF_HW_GPU_SPAN_GROUP`)
+**Platform:** Analogue Pocket (openFPGA)  
+**Stack:** openfpgaOS, OS25 graphics path  
+**Context:** Wing Commander 1 SDL port; GPU/software-renderer parity  
+**Applies to:** OS25 affine span groups (`OF_HW_GPU_SPAN_GROUP`); SDK/core snapshots linked below  
+**Validation:** Reported OS25 Verilator simulation, diagnostic C-reference build, synthetic `pattern-rot1` fixture; not hardware or assembly validation  
+**Last checked:** 2026-11-03 (metadata and evidence availability; diagnostic not rerun)
 
 ## Symptom or context
 
@@ -27,6 +31,10 @@ The GPU advances S/T in 16.16 fixed point and samples their integer portions. Ma
 - Establish parity before profiling. Simulator wall time is not FPGA performance evidence; report simulated target cycles separately from measurements on hardware.
 
 ## Verification and evidence
+
+**Evidence availability, 2026-11-03:** GitHub currently returns `No commit found for SHA` for both pinned snapshots below. The original links and findings are retained, but the technical claims and reported replay have not been revalidated in this metadata update. Restore accessible source snapshots and replay evidence before marking this note Verified again.
+
+Original verification record:
 
 The SDK API and OS25 GPU implementation were checked at pinned snapshots: [openfpgaSDK `of_gpu.h`](https://github.com/openfpgaOS/openfpgaSDK/blob/c4ee28f3870db48bd9c8a9bc1e111ff68da12afe/src/sdk/include/of_gpu.h) and [openfpgaCore `gpu_core.v`](https://github.com/openfpgaOS/openfpgaCore/blob/4053004c11ea62e4023e8f27d8f1dd79e21548df/src/fpga/common/gpu_core.v).
 

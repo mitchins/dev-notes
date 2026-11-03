@@ -23,11 +23,25 @@ Keep one focused note per learning and link related notes instead of copying the
 
 1. Copy [`templates/note.md`](templates/note.md) into the most relevant topic folder under `notes/`.
 2. Give the file a descriptive, searchable name, for example `sdl2-input-focus.md`.
-3. State what is confirmed and what is still a hypothesis. Include versions, evidence, and a way to verify the result when available.
-4. Add the note to that topic's `README.md` index and to [`_sidebar.md`](_sidebar.md) so Docsify navigation and search can find it. Create a topic folder only when there is a real note to put in it.
+3. Fill in the visible [metadata](#note-metadata-and-organization), including the platform and originating context. State what is confirmed and what is still a hypothesis. Include versions, evidence, and a way to verify the result when available.
+4. Add the note to that topic's `README.md`, the platform section of the [notes index](notes/README.md), and [`_sidebar.md`](_sidebar.md). Use `.md` links in ordinary indexes so they work on GitHub and Docsify. Create a topic or platform category only when there is a real note to put in it.
 5. Review the diff for secrets and private details before sharing it.
 
 Notes can describe non-game development too. Porting work, including Analogue Pocket RISC/SDL2, is an initial area of interest; no project-specific findings are assumed here.
+
+## Note metadata and organization
+
+Every note starts with the same small, visible Markdown header from the [template](templates/note.md). No front-matter parser or build step is needed.
+
+- **Platform:** the target device and execution platform, for example Analogue Pocket (openFPGA). Use Platform-independent only when appropriate; use Unknown when not established.
+- **Stack:** the OS, runtime, libraries, or tools involved, for example openfpgaOS and its OS25 graphics path. Keep this separate from the hardware.
+- **Context:** the project or task that produced the learning, such as the Wing Commander 1 SDL port. Context explains the origin; it does not establish support for other targets.
+- **Applies to:** the affected component/API and known versions or pinned snapshots. Say when versions are unknown.
+- **Validation:** what actually ran or was inspected, and what was not checked. A simulator fixture is not a hardware qualification.
+- **Status:** Verified, Hypothesis, or Needs recheck. Missing evidence or stale assumptions need an explicit caveat, not an unqualified Verified label.
+- **Area** and **Last checked:** the topic and the date/scope of the recorded check. A metadata edit is not a new technical test.
+
+Keep one canonical note in a subject folder. Browse by topic or platform through [the notes index](notes/README.md), and search the visible metadata for stack, project, or API names. Preserve existing paths and URLs; add index links rather than duplicating or moving notes to a platform/project folder tree. Use consistent platform/stack names in titles, indexes, and the sidebar.
 
 ## Access and updates
 
