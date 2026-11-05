@@ -1,9 +1,13 @@
-# OS25 affine-span texture bounds and masks
+# Analogue Pocket / OS25: affine-span texture bounds and masks
 
-**Status:** Verified, with scope limits below
-**Area:** Graphics hardware and software-renderer porting
-**Last checked:** 2026-11-06
-**Applies to:** openfpgaOS OS25 affine span groups (`OF_HW_GPU_SPAN_GROUP`)
+- **Status:** Needs recheck (pinned upstream commits unavailable through GitHub; retained local snapshots and later simulator records exist)
+- **Area:** Graphics hardware and software-renderer porting
+- **Platform:** Analogue Pocket (openFPGA)
+- **Stack:** openfpgaOS OS25 graphics path, VexiiRiscv simulator, SDL2 compatibility layer
+- **Context:** Reconstructed Wing Commander 1 SDL port; lessons for portable PC renderers and FPGA graphics paths
+- **Applies to:** OS25 affine span groups (`OF_HW_GPU_SPAN_GROUP`); SDK/core snapshots linked below
+- **Validation:** Matched Vexii/Verilator diagnostics against C and RV32 assembly, synthetic and captured WC1 inputs; simulator-only performance; Pocket GPU display ownership and hardware timing unverified
+- **Last checked:** 2026-11-06 (metadata and evidence availability; no new simulator or hardware run)
 
 ## Symptom or context
 
@@ -38,6 +42,10 @@ The OS25 GPU was pixel-correct on bounded captured WC1 inputs, but was slower en
 After the optimized assembly renderer was installed, the operator reported that ordinary flight was acceptable, while briefing and the takeoff cockpit-closing transition still had occasional roughly 200–300 ms stalls. This is a qualitative hardware observation, not a frame-profiler result. Existing Vexii scene profiles cover short flight windows, not per-frame briefing or launch-animation costs; a plain simulator replay cannot attribute those stalls. Add narrowly scoped per-frame instrumentation before using another long replay to make a scene-specific performance claim.
 
 ## Verification and evidence
+
+**Evidence availability, checked 2026-11-06:** GitHub returns `No commit found for SHA` for both pinned snapshots below. The exact snapshots remain in local reference checkouts, and later simulator results are recorded in this note, but this documentation update did not rerun the diagnostics or re-audit those source snapshots. Keep the historical links and findings scoped; restore publicly accessible pinned evidence before changing the status to Verified.
+
+Original verification record:
 
 The SDK API and OS25 GPU implementation were checked at pinned snapshots: [openfpgaSDK `of_gpu.h`](https://github.com/openfpgaOS/openfpgaSDK/blob/c4ee28f3870db48bd9c8a9bc1e111ff68da12afe/src/sdk/include/of_gpu.h) and [openfpgaCore `gpu_core.v`](https://github.com/openfpgaOS/openfpgaCore/blob/4053004c11ea62e4023e8f27d8f1dd79e21548df/src/fpga/common/gpu_core.v).
 
