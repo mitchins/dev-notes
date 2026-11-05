@@ -1,8 +1,8 @@
 # OS25 affine-span texture bounds and masks
 
-**Status:** Verified, with scope limits below  
-**Area:** Graphics hardware and software-renderer porting  
-**Last checked:** 2026-11-03  
+**Status:** Verified, with scope limits below
+**Area:** Graphics hardware and software-renderer porting
+**Last checked:** 2026-11-06
 **Applies to:** openfpgaOS OS25 affine span groups (`OF_HW_GPU_SPAN_GROUP`)
 
 ## Symptom or context
@@ -25,12 +25,23 @@ The GPU advances S/T in 16.16 fixed point and samples their integer portions. Ma
 - Compare CPU write intent with accepted GPU framebuffer writes. Classify CPU pixels as out-of-bounds, transparent, or opaque; a final-image comparison alone cannot explain missing writes versus extra writes.
 - Start with one deterministic fixture and identical framebuffer/texture state. Compare one-lane and grouped submissions before adding more rotations or real assets. Force rebuilds and check that instrumentation observes the renderer path actually used; a stale object or assembly fast path can bypass a correct-looking recorder.
 - Establish parity before profiling. Simulator wall time is not FPGA performance evidence; report simulated target cycles separately from measurements on hardware.
+- Profile and optimize the existing software raster path before adding an accelerator. A GPU can be pixel-correct yet lose end to end if the CPU still discovers work per candidate pixel, uploads textures, submits commands, and waits for completion.
+
+## Portable PC renderer performance lesson
+
+For the reconstructed portable WC1 renderer's transformed RLE sprites, the expensive path did two 64-bit divisions for every destination candidate. The first bounded fix computed the inverse transform and pixel/row increments once per draw, then advanced fixed-point quotient/remainder values. That preserved the old signed rounding while removing division from the candidate loop. On the RV32 simulator, the isolated coordinate kernel improved from 183,262 to 37,669 simulated microseconds (4.86×), with identical coordinate checksums. This was not a full draw or frame measurement.
+
+A small RV32 assembly row kernel then made the measured transform stage about 2.2–2.5× faster than optimized C on four synthetic parity cases; these stage timings are not complete-call comparisons. The kernel uses guarded 32-bit row arithmetic for the common case and retains the portable fallback when values are outside that range. It accelerates the existing sampler; it does not port the original retail x86 edge walker. In a separate full 64,000-candidate clipped viewport call, the complete call took 29.573 ms in assembly versus 68.997 ms in C, with matching framebuffer hashes. These are Vexii simulator timer results for deterministic raster calls, not Pocket measurements. The change works because it removes expensive per-candidate arithmetic while sampling and writing pixels directly, rather than building an intermediate representation for another device.
+
+The OS25 GPU was pixel-correct on bounded captured WC1 inputs, but was slower end to end in the measured simulation workloads: the 16,590-candidate hangar sprite took 929,974 assembly cycles versus 3,062,933 warm four-lane GPU cycles (3.29× slower); the 26,880-candidate fighter took 1,391,390 versus 4,296,362 cycles (3.09× slower). The GPU producer still performed substantial CPU span work, and command, upload/cache, and fence costs were included. Keep GPU drawing default-off until a producer that avoids candidate-by-candidate CPU discovery shows a complete-operation advantage.
+
+After the optimized assembly renderer was installed, the operator reported that ordinary flight was acceptable, while briefing and the takeoff cockpit-closing transition still had occasional roughly 200–300 ms stalls. This is a qualitative hardware observation, not a frame-profiler result. Existing Vexii scene profiles cover short flight windows, not per-frame briefing or launch-animation costs; a plain simulator replay cannot attribute those stalls. Add narrowly scoped per-frame instrumentation before using another long replay to make a scene-specific performance claim.
 
 ## Verification and evidence
 
 The SDK API and OS25 GPU implementation were checked at pinned snapshots: [openfpgaSDK `of_gpu.h`](https://github.com/openfpgaOS/openfpgaSDK/blob/c4ee28f3870db48bd9c8a9bc1e111ff68da12afe/src/sdk/include/of_gpu.h) and [openfpgaCore `gpu_core.v`](https://github.com/openfpgaOS/openfpgaCore/blob/4053004c11ea62e4023e8f27d8f1dd79e21548df/src/fpga/common/gpu_core.v).
 
-A matched OS25 Verilator diagnostic replay of one synthetic `pattern-rot1` fixture reported zero pixel and write-mask mismatches in both one-lane and four-lane modes, with no out-of-bounds or transparent extra writes. This was a diagnostic C-reference build; it does not qualify the assembly renderer, other rotations, real game assets, hardware behavior, or performance. The earlier broader mismatch remains unexplained, so expand fixtures incrementally and retain the GPU path as optional until they pass.
+The initial R1 `pattern-rot1` case passed in both lane modes. The historical GPU-07 build's 14,604-mismatch version of that fixture was later reproduced with its exact diagnostic ELF. A matched R2 integration passed a 10-fixture matrix in both lane modes and against the production assembly renderer; separate real-data tests passed the captured Mission 1 fighter and six-draw launch/hangar composition against diagnostic C and production assembly. R2 shows the old failure is absent from the current diagnostic integration but does not identify one source edit as its cause. These are simulator-only parity results: they do not establish displayed-frame GPU ownership, Pocket hardware behavior, or acceleration. Keep the GPU default-off and extend coverage incrementally.
 
 ## Related notes
 
